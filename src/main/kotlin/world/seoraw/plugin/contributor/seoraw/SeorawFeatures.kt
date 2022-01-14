@@ -1,8 +1,10 @@
 package world.seoraw.plugin.contributor.seoraw
 
+import org.bukkit.Location
 import org.bukkit.Material
 import org.bukkit.event.EventHandler
 import org.bukkit.event.Listener
+import org.bukkit.event.player.PlayerRespawnEvent
 import org.spigotmc.event.player.PlayerSpawnLocationEvent
 import java.util.concurrent.ThreadLocalRandom
 import kotlin.math.max
@@ -18,13 +20,26 @@ object SeorawFeatures : Listener {
 
     @EventHandler
     fun e(e: PlayerSpawnLocationEvent) {
+        if (!e.player.hasPlayedBefore()) {
+            randomSpawnLocation(e.spawnLocation)
+        }
+    }
+
+    @EventHandler
+    fun e(e: PlayerRespawnEvent) {
+        if (!e.isBedSpawn && !e.isAnchorSpawn) {
+            randomSpawnLocation(e.respawnLocation)
+        }
+    }
+
+    fun randomSpawnLocation(location: Location) {
         var i = 0
-        while (i++ !in 1..10 || e.spawnLocation.block.type == Material.LAVA) {
-            e.spawnLocation.add(random(-range, range).toDouble(), 0.0, random(-range, range).toDouble())
-            e.spawnLocation = e.spawnLocation.world.getHighestBlockAt(e.spawnLocation).location
+        while (i++ !in 1..10 || location.block.type == Material.LAVA) {
+            location.add(random(-range, range).toDouble(), 0.0, random(-range, range).toDouble())
+            location.y = location.world.getHighestBlockYAt(location).toDouble()
         }
         // 修正最终坐标
-        e.spawnLocation.add(0.5, 1.0, 0.5)
+        location.add(0.5, 1.0, 0.5)
     }
 }
 
