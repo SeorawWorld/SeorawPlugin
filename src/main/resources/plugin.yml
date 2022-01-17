@@ -1,5 +1,0 @@
-name: SeorawPlugin
-main: world.seoraw.plugin.SeorawKt
-version: 1.0.0
-libraries:
-  - org.jetbrains.kotlin:kotlin-stdlib:1.5.10

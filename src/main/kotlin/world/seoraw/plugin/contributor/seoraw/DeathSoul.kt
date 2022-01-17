@@ -11,13 +11,3 @@ data class DeathSoul(val location: Location, val owner: UUID, val inventory: Mut
     val player: Player?
         get() = Bukkit.getPlayer(owner)
 }
-
-fun Player.giveItem(itemStack: List<ItemStack>) {
-    itemStack.forEach { giveItem(it) }
-}
-
-fun Player.giveItem(itemStack: ItemStack, repeat: Int = 1) {
-    (1..repeat).forEach { _ ->
-        inventory.addItem(itemStack).values.forEach { world.dropItem(location, it) }
-    }
-}
